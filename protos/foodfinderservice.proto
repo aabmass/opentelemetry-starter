@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "foodfinder.proto";
+
+package foodfinder.finder;
+
+service Finder {
+    rpc findIngredient(FindIngredientRequest) returns (FindIngredientResponse) {}
+}
+
+message FindIngredientRequest {
+    string ingredient = 1;
+}
+
+message FindIngredientResponse {
+    repeated foodfinder.VendorInventory vendorInventories = 1;
+}
