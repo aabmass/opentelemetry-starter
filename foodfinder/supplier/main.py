@@ -15,6 +15,7 @@ class SupplierServicer(supplier_pb2_grpc.SupplierServicer):
     def searchVendors(
         self, request: supplier_pb2.SearchVendorsRequest, context: grpc.RpcContext,
     ) -> supplier_pb2.SearchVendorsResponse:
+        print("Got request -", request)
         # mocked for now
         return supplier_pb2.SearchVendorsResponse(vendorIds=MOCK_VENDOR_IDS)
 
