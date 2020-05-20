@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package foodfinder.supplier;
+
+/**
+ * Service for searching for vendors of a given ingredient. Returns a list of
+ * all vendors that supply the ingredient.
+ */
+service Supplier {
+  rpc searchVendors(SearchVendorsRequest) returns (SearchVendorsResponse) {}
+}
+
+message SearchVendorsRequest {
+  string ingredient = 1;
+}
+
+message SearchVendorsResponse {
+  repeated int64 vendorIds = 1;
+}

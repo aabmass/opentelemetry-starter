@@ -18,7 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='foodfinder',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x1b\x66oodfinder/foodfinder.proto\x12\nfoodfinder\"-\n\x05Money\x12\x14\n\x0c\x63urrencyCode\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x03\"]\n\x0fVendorInventory\x12\x12\n\nvendorName\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x03\x12$\n\tunitPrice\x18\x03 \x01(\x0b\x32\x11.foodfinder.Moneyb\x06proto3'
+  serialized_pb=b'\n\x1b\x66oodfinder/foodfinder.proto\x12\nfoodfinder\"-\n\x05Money\x12\x14\n\x0c\x63urrencyCode\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x03\"o\n\x0fVendorInventory\x12\x12\n\nvendorName\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x03\x12$\n\tunitPrice\x18\x03 \x01(\x0b\x32\x11.foodfinder.Money\x12\x10\n\x08vendorId\x18\x04 \x01(\x03\x62\x06proto3'
 )
 
 
@@ -90,6 +90,13 @@ _VENDORINVENTORY = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='vendorId', full_name='foodfinder.VendorInventory.vendorId', index=3,
+      number=4, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -103,7 +110,7 @@ _VENDORINVENTORY = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=90,
-  serialized_end=183,
+  serialized_end=201,
 )
 
 _VENDORINVENTORY.fields_by_name['unitPrice'].message_type = _MONEY

@@ -8,6 +8,7 @@ from foodfinder import foodfinder_pb2
 MOCK_VENDOR_INVENTORIES = [
     foodfinder_pb2.VendorInventory(
         vendorName="Costco",
+        vendorId=88765432,
         quantity=2,
         unitPrice=foodfinder_pb2.Money(currencyCode="USD", amount=1000),
     )
