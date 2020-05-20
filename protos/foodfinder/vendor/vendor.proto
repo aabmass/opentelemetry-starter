@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+import "foodfinder/foodfinder.proto";
+
+package foodfinder.vendor;
+
+/**
+ * Gives inventory and price of item from the given vendor
+ */
+service Vendor {
+  rpc queryInventory(QueryInventoryRequest) returns (QueryInventoryResponse) {}
+}
+
+message QueryInventoryRequest {
+  int64 vendorId = 1;
+  string ingredient = 2;
+}
+
+message QueryInventoryResponse {
+  // May be unset if no inventory found
+  foodfinder.VendorInventory vendorInventory = 1;
+}

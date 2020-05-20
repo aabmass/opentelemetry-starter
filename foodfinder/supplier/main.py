@@ -1,14 +1,8 @@
 from concurrent.futures import ThreadPoolExecutor
 import grpc
 from grpc_reflection.v1alpha import reflection
-from . import supplier_pb2, supplier_pb2_grpc
-
-MOCK_VENDOR_IDS = [
-    88765432,
-    5432,
-    82823,
-    1011011012,
-]
+from foodfinder.supplier import supplier_pb2, supplier_pb2_grpc
+from foodfinder import inventory_db
 
 
 class SupplierServicer(supplier_pb2_grpc.SupplierServicer):
@@ -17,7 +11,7 @@ class SupplierServicer(supplier_pb2_grpc.SupplierServicer):
     ) -> supplier_pb2.SearchVendorsResponse:
         print("Got request -", request)
         # mocked for now
-        return supplier_pb2.SearchVendorsResponse(vendorIds=MOCK_VENDOR_IDS)
+        return supplier_pb2.SearchVendorsResponse(vendorIds=inventory_db.all_vendor_ids())
 
 
 def main() -> None:
