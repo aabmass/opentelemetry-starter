@@ -10,7 +10,9 @@ class VendorServicer(vendor_pb2_grpc.VendorServicer):
         self, request: vendor_pb2.QueryInventoryRequest, context: grpc.RpcContext,
     ) -> vendor_pb2.QueryInventoryResponse:
         return vendor_pb2.QueryInventoryResponse(
-            vendorInventory=inventory_db.get_vendor_inventory(request.vendorId)
+            vendorInventory=inventory_db.get_vendor_inventory(request.vendorId).get(
+                request.ingredient
+            )
         )
 
 
