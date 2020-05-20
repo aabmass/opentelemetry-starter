@@ -1,12 +1,14 @@
 from concurrent.futures import ThreadPoolExecutor
-import grpc
 from typing import Optional
+
+import grpc
 from grpc_reflection.v1alpha import reflection
-from foodfinder.util import filter_nulls
-from foodfinder.finder import finder_pb2_grpc, finder_pb2
+
 from foodfinder import foodfinder_pb2
-from foodfinder.supplier import supplier_pb2_grpc, supplier_pb2
-from foodfinder.vendor import vendor_pb2_grpc, vendor_pb2
+from foodfinder.finder import finder_pb2, finder_pb2_grpc
+from foodfinder.supplier import supplier_pb2, supplier_pb2_grpc
+from foodfinder.util import filter_nulls
+from foodfinder.vendor import vendor_pb2, vendor_pb2_grpc
 
 TIMEOUT = 5
 

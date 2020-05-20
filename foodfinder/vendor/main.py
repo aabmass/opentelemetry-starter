@@ -1,8 +1,11 @@
 from concurrent.futures import ThreadPoolExecutor
+
 import grpc
 from grpc_reflection.v1alpha import reflection
-from . import vendor_pb2, vendor_pb2_grpc
+
 from foodfinder import foodfinder_pb2, inventory_db
+
+from . import vendor_pb2, vendor_pb2_grpc
 
 
 class VendorServicer(vendor_pb2_grpc.VendorServicer):

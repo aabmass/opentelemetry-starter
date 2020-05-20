@@ -19,12 +19,14 @@ pip install -r requirements.dev.txt
 Run the codegen.sh script.
 
 ## Running each service
-Each service is in a separate python package with a `main` module that you can run e.g. `python -m foodfinder.finder.main`. For convenience, there are some scripts to run each service and scripts to call each service with `grpc_cli`:
-
-### Finder
+Each service is in a separate python package with a `main` module that you
+can run e.g. `python -m foodfinder.finder.main`. For convenience, there are
+some scripts to run each service and scripts to call each service with
+`grpc_cli` e.g.:
 ```sh
 # start the server
 ./run_finder.sh
 
 # from another terminal, call the service
 ./call_finder.sh
+```
