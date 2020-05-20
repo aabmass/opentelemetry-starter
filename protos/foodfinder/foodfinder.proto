@@ -10,12 +10,13 @@ package foodfinder;
  * e.g. $5.04 USD would be currencyCode = 'USD', amount = 504 (cents)
  */
 message Money {
-    string currencyCode = 1;
-    int64 amount = 2;
+  string currencyCode = 1;
+  int64 amount = 2;
 }
 
 message VendorInventory {
-    string vendorName = 1;
-    int64 quantity = 2;
-    Money unitPrice = 3;
+  string vendorName = 1;
+  int64 quantity = 2;
+  Money unitPrice = 3;
+  int64 vendorId = 4;
 }

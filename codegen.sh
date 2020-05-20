@@ -1,4 +1,5 @@
 #!/bin/bash
+find foodfinder/ -iname "*_pb*.py" -exec rm {} +
 source venv/bin/activate
 python -m grpc_tools.protoc \
     -Iprotos \
