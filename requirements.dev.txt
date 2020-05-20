@@ -3,6 +3,7 @@ attrs==19.3.0
 black==19.10b0
 click==7.1.2
 grpcio==1.29.0
+grpcio-reflection==1.29.0
 grpcio-tools==1.29.0
 mypy==0.770
 mypy-extensions==0.4.3
