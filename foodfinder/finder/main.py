@@ -10,16 +10,6 @@ from foodfinder.vendor import vendor_pb2_grpc, vendor_pb2
 
 TIMEOUT = 5
 
-MOCK_VENDOR_INVENTORIES = [
-    foodfinder_pb2.VendorInventory(
-        vendorName="Costco",
-        vendorId=88765432,
-        quantity=2,
-        unitPrice=foodfinder_pb2.Money(currencyCode="USD", amount=1000),
-    )
-]
-
-
 class FinderServicer(finder_pb2_grpc.FinderServicer):
     def findIngredient(
         self, request: finder_pb2.FindIngredientRequest, context: grpc.RpcContext,

@@ -2,22 +2,16 @@ from concurrent.futures import ThreadPoolExecutor
 import grpc
 from grpc_reflection.v1alpha import reflection
 from . import vendor_pb2, vendor_pb2_grpc
-
-MOCK_VENDOR_IDS = [
-    88765432,
-    5432,
-    82823,
-    1011011012,
-]
+from foodfinder import foodfinder_pb2, inventory_db
 
 
 class VendorServicer(vendor_pb2_grpc.VendorServicer):
     def queryInventory(
         self, request: vendor_pb2.QueryInventoryRequest, context: grpc.RpcContext,
     ) -> vendor_pb2.QueryInventoryResponse:
-        print("Got request -", request)
-        # mocked for now
-        return vendor_pb2.QueryInventoryResponse(vendorInventory=None)
+        return vendor_pb2.QueryInventoryResponse(
+            vendorInventory=inventory_db.get_vendor_inventory(request.vendorId)
+        )
 
 
 def main() -> None:
