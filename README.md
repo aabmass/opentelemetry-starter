@@ -8,7 +8,7 @@ metrics need to be sent to Google Cloud Monitoring (Stackdriver).
 ## Setup
 
 In a shell:
-```
+```sh
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.dev.txt
@@ -22,7 +22,7 @@ Run the codegen.sh script.
 Each service is in a separate python package with a `main` module that you can run e.g. `python -m foodfinder.finder.main`. For convenience, there are some scripts to run each service and scripts to call each service with `grpc_cli`:
 
 ### Finder
-```
+```sh
 # start the server
 ./run_finder.sh
 
