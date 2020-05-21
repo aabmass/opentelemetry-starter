@@ -3,7 +3,7 @@ AssertPathExists=/home/foodfinder/opentelemetry-starter
 
 [Service]
 WorkingDirectory=/home/foodfinder/opentelemetry-starter
-ExecStart=/home/foodfinder/opentelemetry-starter/run_vendor.sh
+ExecStart=/home/foodfinder/opentelemetry-starter/run_vendor.sh --is_prod
 Restart=always
 PrivateTmp=true
 NoNewPrivileges=true
