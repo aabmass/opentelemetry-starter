@@ -1,5 +1,8 @@
 #!/bin/bash
-find foodfinder/ -iname "*_pb*.py" -exec rm {} +
+
+# clean up old files
+find foodfinder/ -regex ".*_pb2.*\.pyi?" -exec rm {} +
+
 source venv/bin/activate
 python -m grpc_tools.protoc \
     -Iprotos \
