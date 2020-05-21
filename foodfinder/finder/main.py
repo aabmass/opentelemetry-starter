@@ -4,7 +4,7 @@ from typing import Optional
 import grpc
 from grpc_reflection.v1alpha import reflection
 
-from foodfinder import foodfinder_pb2
+from foodfinder import foodfinder_pb2, util
 from foodfinder.finder import finder_pb2, finder_pb2_grpc
 from foodfinder.supplier import supplier_pb2, supplier_pb2_grpc
 from foodfinder.util import filter_nulls
@@ -12,12 +12,19 @@ from foodfinder.vendor import vendor_pb2, vendor_pb2_grpc
 
 TIMEOUT = 5
 
+
 class FinderServicer(finder_pb2_grpc.FinderServicer):
+    def __init__(self, is_prod: bool) -> None:
+        super().__init__()
+        self.is_prod = is_prod
+
     def findIngredient(
         self, request: finder_pb2.FindIngredientRequest, context: grpc.RpcContext,
     ) -> finder_pb2.FindIngredientResponse:
         # Call to Supplier service
-        with grpc.insecure_channel("localhost:50053") as channel:
+        with grpc.insecure_channel(
+            util.address_for_client("supplier", self.is_prod)
+        ) as channel:
             supplier_stub = supplier_pb2_grpc.SupplierStub(channel)
 
             print("calling supplier service")
@@ -27,7 +34,9 @@ class FinderServicer(finder_pb2_grpc.FinderServicer):
             )
 
         # Call to vendor service
-        with grpc.insecure_channel("localhost:50055") as channel:
+        with grpc.insecure_channel(
+            util.address_for_client("vendor", self.is_prod)
+        ) as channel:
             vendor_stub = vendor_pb2_grpc.VendorStub(channel)
 
             # TODO: call for each vendor in parallel
@@ -57,10 +66,12 @@ class FinderServicer(finder_pb2_grpc.FinderServicer):
 
 
 def main() -> None:
+    parser = util.get_base_parser()
+    args = parser.parse_args()
     server = grpc.server(ThreadPoolExecutor(max_workers=10))
 
-    finder_pb2_grpc.add_FinderServicer_to_server(FinderServicer(), server)
-    hostname = "[::]:50051"
+    finder_pb2_grpc.add_FinderServicer_to_server(FinderServicer(args.is_prod), server)
+    hostname = util.address_for_server("finder", args.is_prod)
     server.add_insecure_port(hostname)
 
     # reflection for grpc_cli
