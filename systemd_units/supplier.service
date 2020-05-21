@@ -1,0 +1,12 @@
+[Unit]
+AssertPathExists=/home/foodfinder/opentelemetry-starter
+
+[Service]
+AssertPathExists=/home/foodfinder/opentelemetry-starter
+ExecStart=/home/foodfinder/opentelemetry-starter/run_supplier.sh
+Restart=always
+PrivateTmp=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target
