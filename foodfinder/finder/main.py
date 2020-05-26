@@ -21,19 +21,16 @@ class FinderServicer(finder_pb2_grpc.FinderServicer):
         super().__init__()
         self.is_prod = is_prod
 
-        exporter = stackdriver_exporter.StackdriverExporter()
-        tracer = Tracer(exporter=exporter)
-
         supplier_address = util.address_for_client("supplier", self.is_prod)
         self.supplier_tracer_interceptor = client_interceptor.OpenCensusClientInterceptor(
-            tracer, host_port=supplier_address,
+            tracer=None, host_port=supplier_address,
         )
 
         vendor_address = util.address_for_client("vendor", self.is_prod)
         self.vendor_tracer_interceptor = client_interceptor.OpenCensusClientInterceptor(
-            tracer, host_port=vendor_address,
+            tracer=None, host_port=vendor_address,
         )
-    
+
     def _supplier_channel(self) -> grpc.Channel:
         channel = grpc.insecure_channel(
             util.address_for_client("supplier", self.is_prod)
@@ -41,9 +38,7 @@ class FinderServicer(finder_pb2_grpc.FinderServicer):
         return grpc.intercept_channel(channel, self.supplier_tracer_interceptor)
 
     def _vendor_channel(self) -> grpc.Channel:
-        channel = grpc.insecure_channel(
-            util.address_for_client("vendor", self.is_prod)
-        )
+        channel = grpc.insecure_channel(util.address_for_client("vendor", self.is_prod))
         return grpc.intercept_channel(channel, self.vendor_tracer_interceptor)
 
     def findIngredient(
