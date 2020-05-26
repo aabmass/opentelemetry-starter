@@ -6,6 +6,7 @@ from foodfinder.foodfinder_pb2 import (
 
 from google.protobuf.descriptor import (
     Descriptor as google___protobuf___descriptor___Descriptor,
+    FileDescriptor as google___protobuf___descriptor___FileDescriptor,
 )
 
 from google.protobuf.internal.containers import (
@@ -37,9 +38,11 @@ if sys.version_info < (3,):
     builtin___unicode = unicode
 
 
+DESCRIPTOR: google___protobuf___descriptor___FileDescriptor = ...
+
 class FindIngredientRequest(google___protobuf___message___Message):
     DESCRIPTOR: google___protobuf___descriptor___Descriptor = ...
-    ingredient = ... # type: typing___Text
+    ingredient: typing___Text = ...
 
     def __init__(self,
         *,
@@ -51,10 +54,8 @@ class FindIngredientRequest(google___protobuf___message___Message):
     else:
         @classmethod
         def FromString(cls, s: typing___Union[builtin___bytes, builtin___buffer, builtin___unicode]) -> FindIngredientRequest: ...
-    def MergeFrom(self, other_msg: google___protobuf___message___Message) -> None: ...
-    def CopyFrom(self, other_msg: google___protobuf___message___Message) -> None: ...
     def ClearField(self, field_name: typing_extensions___Literal[u"ingredient",b"ingredient"]) -> None: ...
-global___FindIngredientRequest = FindIngredientRequest
+type___FindIngredientRequest = FindIngredientRequest
 
 class FindIngredientResponse(google___protobuf___message___Message):
     DESCRIPTOR: google___protobuf___descriptor___Descriptor = ...
@@ -72,7 +73,5 @@ class FindIngredientResponse(google___protobuf___message___Message):
     else:
         @classmethod
         def FromString(cls, s: typing___Union[builtin___bytes, builtin___buffer, builtin___unicode]) -> FindIngredientResponse: ...
-    def MergeFrom(self, other_msg: google___protobuf___message___Message) -> None: ...
-    def CopyFrom(self, other_msg: google___protobuf___message___Message) -> None: ...
     def ClearField(self, field_name: typing_extensions___Literal[u"vendorInventories",b"vendorInventories"]) -> None: ...
-global___FindIngredientResponse = FindIngredientResponse
+type___FindIngredientResponse = FindIngredientResponse
