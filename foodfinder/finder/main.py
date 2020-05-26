@@ -3,6 +3,9 @@ from typing import Optional
 
 import grpc
 from grpc_reflection.v1alpha import reflection
+from opencensus.ext.grpc import client_interceptor
+from opencensus.ext.stackdriver import trace_exporter as stackdriver_exporter
+from opencensus.trace.tracer import Tracer
 
 from foodfinder import foodfinder_pb2, util
 from foodfinder.finder import finder_pb2, finder_pb2_grpc
@@ -18,13 +21,36 @@ class FinderServicer(finder_pb2_grpc.FinderServicer):
         super().__init__()
         self.is_prod = is_prod
 
+        exporter = stackdriver_exporter.StackdriverExporter()
+        tracer = Tracer(exporter=exporter)
+
+        supplier_address = util.address_for_client("supplier", self.is_prod)
+        self.supplier_tracer_interceptor = client_interceptor.OpenCensusClientInterceptor(
+            tracer, host_port=supplier_address,
+        )
+
+        vendor_address = util.address_for_client("vendor", self.is_prod)
+        self.vendor_tracer_interceptor = client_interceptor.OpenCensusClientInterceptor(
+            tracer, host_port=vendor_address,
+        )
+    
+    def _supplier_channel(self) -> grpc.Channel:
+        channel = grpc.insecure_channel(
+            util.address_for_client("supplier", self.is_prod)
+        )
+        return grpc.intercept_channel(channel, self.supplier_tracer_interceptor)
+
+    def _vendor_channel(self) -> grpc.Channel:
+        channel = grpc.insecure_channel(
+            util.address_for_client("vendor", self.is_prod)
+        )
+        return grpc.intercept_channel(channel, self.vendor_tracer_interceptor)
+
     def findIngredient(
         self, request: finder_pb2.FindIngredientRequest, context: grpc.RpcContext,
     ) -> finder_pb2.FindIngredientResponse:
         # Call to Supplier service
-        with grpc.insecure_channel(
-            util.address_for_client("supplier", self.is_prod)
-        ) as channel:
+        with self._supplier_channel() as channel:
             supplier_stub = supplier_pb2_grpc.SupplierStub(channel)
 
             print("calling supplier service")
@@ -34,9 +60,7 @@ class FinderServicer(finder_pb2_grpc.FinderServicer):
             )
 
         # Call to vendor service
-        with grpc.insecure_channel(
-            util.address_for_client("vendor", self.is_prod)
-        ) as channel:
+        with self._vendor_channel() as channel:
             vendor_stub = vendor_pb2_grpc.VendorStub(channel)
 
             # TODO: call for each vendor in parallel
