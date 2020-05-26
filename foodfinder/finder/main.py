@@ -68,7 +68,7 @@ class FinderServicer(finder_pb2_grpc.FinderServicer):
 def main() -> None:
     parser = util.get_base_parser()
     args = parser.parse_args()
-    server = grpc.server(ThreadPoolExecutor(max_workers=10))
+    server = util.create_grpc_server(args.is_prod)
 
     finder_pb2_grpc.add_FinderServicer_to_server(FinderServicer(args.is_prod), server)
     hostname = util.address_for_server("finder", args.is_prod)
