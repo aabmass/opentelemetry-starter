@@ -34,3 +34,7 @@ parallel -- ./run_finder.sh  ./run_supplier.sh ./run_vendor.sh
 
 ## Deploy to GCP
 Run the `deploy.sh` script optionally with a `BRANCH` envar.
+
+## Traces in GCP
+Calling the deployed service, traces show up in GCP:
+![traces](traces.png)
