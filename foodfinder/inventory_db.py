@@ -40,7 +40,15 @@ _MOCK_VENDOR_INVENTORIES = {
             quantity=5,
             unitPrice=foodfinder_pb2.Money(currencyCode="USD", amount=499),
         ),
-    }
+    },
+    4442315: {
+        "flour": foodfinder_pb2.VendorInventory(
+            vendorName="Costshop",
+            vendorId=4442315,
+            quantity=4,
+            unitPrice=foodfinder_pb2.Money(currencyCode="USD", amount=1199),
+        ),
+    },
 }
 
 
