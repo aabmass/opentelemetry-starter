@@ -21,7 +21,7 @@ class SupplierServicer(supplier_pb2_grpc.SupplierServicer):
 def main() -> None:
     parser = util.get_base_parser()
     args = parser.parse_args()
-    server = grpc.server(ThreadPoolExecutor(max_workers=10))
+    server = util.create_grpc_server(args.is_prod)
 
     supplier_pb2_grpc.add_SupplierServicer_to_server(SupplierServicer(), server)
     hostname = util.address_for_server("supplier", args.is_prod)

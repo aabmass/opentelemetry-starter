@@ -22,7 +22,7 @@ class VendorServicer(vendor_pb2_grpc.VendorServicer):
 def main() -> None:
     parser = util.get_base_parser()
     args = parser.parse_args()
-    server = grpc.server(ThreadPoolExecutor(max_workers=10))
+    server = util.create_grpc_server(args.is_prod)
 
     vendor_pb2_grpc.add_VendorServicer_to_server(VendorServicer(), server)
     hostname = util.address_for_server("vendor", args.is_prod)

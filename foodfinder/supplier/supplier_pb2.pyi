@@ -2,6 +2,7 @@
 import sys
 from google.protobuf.descriptor import (
     Descriptor as google___protobuf___descriptor___Descriptor,
+    FileDescriptor as google___protobuf___descriptor___FileDescriptor,
 )
 
 from google.protobuf.internal.containers import (
@@ -33,9 +34,11 @@ if sys.version_info < (3,):
     builtin___unicode = unicode
 
 
+DESCRIPTOR: google___protobuf___descriptor___FileDescriptor = ...
+
 class SearchVendorsRequest(google___protobuf___message___Message):
     DESCRIPTOR: google___protobuf___descriptor___Descriptor = ...
-    ingredient = ... # type: typing___Text
+    ingredient: typing___Text = ...
 
     def __init__(self,
         *,
@@ -47,14 +50,12 @@ class SearchVendorsRequest(google___protobuf___message___Message):
     else:
         @classmethod
         def FromString(cls, s: typing___Union[builtin___bytes, builtin___buffer, builtin___unicode]) -> SearchVendorsRequest: ...
-    def MergeFrom(self, other_msg: google___protobuf___message___Message) -> None: ...
-    def CopyFrom(self, other_msg: google___protobuf___message___Message) -> None: ...
     def ClearField(self, field_name: typing_extensions___Literal[u"ingredient",b"ingredient"]) -> None: ...
-global___SearchVendorsRequest = SearchVendorsRequest
+type___SearchVendorsRequest = SearchVendorsRequest
 
 class SearchVendorsResponse(google___protobuf___message___Message):
     DESCRIPTOR: google___protobuf___descriptor___Descriptor = ...
-    vendorIds = ... # type: google___protobuf___internal___containers___RepeatedScalarFieldContainer[builtin___int]
+    vendorIds: google___protobuf___internal___containers___RepeatedScalarFieldContainer[builtin___int] = ...
 
     def __init__(self,
         *,
@@ -66,7 +67,5 @@ class SearchVendorsResponse(google___protobuf___message___Message):
     else:
         @classmethod
         def FromString(cls, s: typing___Union[builtin___bytes, builtin___buffer, builtin___unicode]) -> SearchVendorsResponse: ...
-    def MergeFrom(self, other_msg: google___protobuf___message___Message) -> None: ...
-    def CopyFrom(self, other_msg: google___protobuf___message___Message) -> None: ...
     def ClearField(self, field_name: typing_extensions___Literal[u"vendorIds",b"vendorIds"]) -> None: ...
-global___SearchVendorsResponse = SearchVendorsResponse
+type___SearchVendorsResponse = SearchVendorsResponse
