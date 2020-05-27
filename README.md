@@ -22,11 +22,15 @@ Run the codegen.sh script.
 Each service is in a separate python package with a `main` module that you
 can run e.g. `python -m foodfinder.finder.main`. For convenience, there are
 some scripts to run each service and scripts to call each service with
-`grpc_cli` e.g.:
-```sh
-# start the server
-./run_finder.sh
+`grpc_cli`. To run all at the same time, you can use `parallel` (moreutils):
 
-# from another terminal, call the service
-./call_finder.sh
+```sh
+# start the servers
+parallel -- ./run_finder.sh  ./run_supplier.sh ./run_vendor.sh
+
+# from another terminal, call finder searching for flour
+./call_finder.sh flour
 ```
+
+## Deploy to GCP
+Run the `deploy.sh` script optionally with a `BRANCH` envar.
