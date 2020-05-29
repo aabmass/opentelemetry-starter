@@ -8,8 +8,8 @@ do
     sudo -u foodfinder -HE bash << ENDSUDO
         cd /home/foodfinder/opentelemetry-starter
         source venv/bin/activate
-        git checkout ${BRANCH:-master}
         git pull
+        git checkout ${BRANCH:-master}
         pip install -r requirements.dev.txt
 ENDSUDO
     sudo systemctl restart $host.service
