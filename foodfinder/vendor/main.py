@@ -1,9 +1,8 @@
-from concurrent.futures import ThreadPoolExecutor
 
 import grpc
 from grpc_reflection.v1alpha import reflection
 
-from foodfinder import foodfinder_pb2, inventory_db, util
+from foodfinder import inventory_db, util
 
 from . import vendor_pb2, vendor_pb2_grpc
 

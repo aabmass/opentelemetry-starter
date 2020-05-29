@@ -1,6 +1,7 @@
-from typing import List, Optional, TypeVar, Literal, Dict
-from concurrent.futures import ThreadPoolExecutor
 from argparse import ArgumentParser
+from concurrent.futures import ThreadPoolExecutor
+from typing import Dict, List, Literal, Optional, TypeVar
+
 import grpc
 from opencensus.ext.grpc import server_interceptor
 from opencensus.ext.stackdriver import trace_exporter as stackdriver_exporter

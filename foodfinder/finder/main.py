@@ -1,11 +1,8 @@
-from concurrent.futures import ThreadPoolExecutor
 from typing import Optional
 
 import grpc
 from grpc_reflection.v1alpha import reflection
 from opencensus.ext.grpc import client_interceptor
-from opencensus.ext.stackdriver import trace_exporter as stackdriver_exporter
-from opencensus.trace.tracer import Tracer
 
 from foodfinder import foodfinder_pb2, util
 from foodfinder.finder import finder_pb2, finder_pb2_grpc
