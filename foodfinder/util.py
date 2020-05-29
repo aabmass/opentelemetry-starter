@@ -3,9 +3,17 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List, Literal, Optional, TypeVar
 
 import grpc
-from opencensus.ext.grpc import server_interceptor
-from opencensus.ext.stackdriver import trace_exporter as stackdriver_exporter
-from opencensus.trace import samplers
+from opentelemetry import trace
+from opentelemetry.ext.cloud_trace import CloudTraceSpanExporter
+from opentelemetry.ext.grpc import server_interceptor
+from opentelemetry.ext.grpc.grpcext import intercept_server
+from opentelemetry.sdk.trace import MultiSpanProcessor, TracerProvider
+from opentelemetry.sdk.trace.export import (ConsoleSpanExporter,
+                                            SimpleExportSpanProcessor)
+
+trace.set_tracer_provider(TracerProvider())
+
+# tracer = trace.get_tracer(__name__)
 
 ServiceName = Literal["finder", "supplier", "vendor"]
 
@@ -43,15 +51,19 @@ def get_base_parser() -> ArgumentParser:
 
 
 def create_grpc_server(is_prod: bool) -> grpc.Server:
-    interceptors = []
+    console_span_processor = SimpleExportSpanProcessor(ConsoleSpanExporter())
     if is_prod:
-        sampler = samplers.AlwaysOnSampler()
-        exporter = stackdriver_exporter.StackdriverExporter()
-        tracer_interceptor = server_interceptor.OpenCensusServerInterceptor(
-            sampler, exporter
-        )
-        interceptors.append(tracer_interceptor)
+        span_processor = MultiSpanProcessor()
+        span_processor.add_span_processor(console_span_processor)
+        span_processor.add_span_processor(SimpleExportSpanProcessor(CloudTraceSpanExporter()))
+    else:
+        span_processor = console_span_processor
 
-    return grpc.server(
-        ThreadPoolExecutor(max_workers=10), interceptors=interceptors,
+    # this should typecheck but the API interface doesn't have add_span_processor()
+    trace.get_tracer_provider().add_span_processor(  # type: ignore
+       span_processor 
     )
+
+    server = grpc.server(ThreadPoolExecutor(max_workers=10))
+    server = intercept_server(server, server_interceptor())
+    return server

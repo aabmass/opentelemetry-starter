@@ -7,8 +7,10 @@ do
     gcloud beta compute ssh --zone "us-central1-a" "$host" --project "otel-starter-project" -- << ENDSSH
     sudo -u foodfinder -HE bash << ENDSUDO
         cd /home/foodfinder/opentelemetry-starter
+        source venv/bin/activate
         git checkout ${BRANCH:-master}
         git pull
+        pip install -r requirements.dev.txt
 ENDSUDO
     sudo systemctl restart $host.service
 ENDSSH
