@@ -8,7 +8,8 @@ from opentelemetry.ext.cloud_trace import CloudTraceSpanExporter
 from opentelemetry.ext.grpc import server_interceptor
 from opentelemetry.ext.grpc.grpcext import intercept_server
 from opentelemetry.sdk.trace import MultiSpanProcessor, TracerProvider
-from opentelemetry.sdk.trace.export import (ConsoleSpanExporter,
+from opentelemetry.sdk.trace.export import (BatchExportSpanProcessor,
+                                            ConsoleSpanExporter,
                                             SimpleExportSpanProcessor)
 
 trace.set_tracer_provider(TracerProvider())
@@ -55,13 +56,15 @@ def create_grpc_server(is_prod: bool) -> grpc.Server:
     if is_prod:
         span_processor = MultiSpanProcessor()
         span_processor.add_span_processor(console_span_processor)
-        span_processor.add_span_processor(SimpleExportSpanProcessor(CloudTraceSpanExporter()))
+        span_processor.add_span_processor(
+            BatchExportSpanProcessor(CloudTraceSpanExporter())
+        )
     else:
         span_processor = console_span_processor
 
     # this should typecheck but the API interface doesn't have add_span_processor()
     trace.get_tracer_provider().add_span_processor(  # type: ignore
-       span_processor 
+        span_processor
     )
 
     server = grpc.server(ThreadPoolExecutor(max_workers=10))

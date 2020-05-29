@@ -1,5 +1,5 @@
-from typing import Optional
 from contextlib import contextmanager
+from typing import Optional
 
 import grpc
 from grpc_reflection.v1alpha import reflection
