@@ -1,8 +1,10 @@
 from typing import Optional
+from contextlib import contextmanager
 
 import grpc
 from grpc_reflection.v1alpha import reflection
-from opencensus.ext.grpc import client_interceptor
+from opentelemetry.ext.grpc import client_interceptor
+from opentelemetry.ext.grpc.grpcext import intercept_channel
 
 from foodfinder import foodfinder_pb2, util
 from foodfinder.finder import finder_pb2, finder_pb2_grpc
@@ -17,32 +19,21 @@ class FinderServicer(finder_pb2_grpc.FinderServicer):
     def __init__(self, is_prod: bool) -> None:
         super().__init__()
         self.is_prod = is_prod
+        self._interceptor = client_interceptor()
 
-        supplier_address = util.address_for_client("supplier", self.is_prod)
-        self.supplier_tracer_interceptor = client_interceptor.OpenCensusClientInterceptor(
-            tracer=None, host_port=supplier_address,
-        )
-
-        vendor_address = util.address_for_client("vendor", self.is_prod)
-        self.vendor_tracer_interceptor = client_interceptor.OpenCensusClientInterceptor(
-            tracer=None, host_port=vendor_address,
-        )
-
-    def _supplier_channel(self) -> grpc.Channel:
-        channel = grpc.insecure_channel(
-            util.address_for_client("supplier", self.is_prod)
-        )
-        return grpc.intercept_channel(channel, self.supplier_tracer_interceptor)
-
-    def _vendor_channel(self) -> grpc.Channel:
-        channel = grpc.insecure_channel(util.address_for_client("vendor", self.is_prod))
-        return grpc.intercept_channel(channel, self.vendor_tracer_interceptor)
+    @contextmanager
+    def _service_channel(self, service_name: util.ServiceName) -> grpc.Channel:
+        with grpc.insecure_channel(
+            util.address_for_client(service_name, self.is_prod)
+        ) as channel:
+            yield intercept_channel(channel, self._interceptor)
 
     def findIngredient(
         self, request: finder_pb2.FindIngredientRequest, context: grpc.RpcContext,
     ) -> finder_pb2.FindIngredientResponse:
         # Call to Supplier service
-        with self._supplier_channel() as channel:
+        with self._service_channel("supplier") as channel:
+            print("HELLO")
             supplier_stub = supplier_pb2_grpc.SupplierStub(channel)
 
             print("calling supplier service")
@@ -52,7 +43,7 @@ class FinderServicer(finder_pb2_grpc.FinderServicer):
             )
 
         # Call to vendor service
-        with self._vendor_channel() as channel:
+        with self._service_channel("vendor") as channel:
             vendor_stub = vendor_pb2_grpc.VendorStub(channel)
 
             # TODO: call for each vendor in parallel

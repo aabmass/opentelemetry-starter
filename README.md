@@ -36,5 +36,9 @@ parallel -- ./run_finder.sh  ./run_supplier.sh ./run_vendor.sh
 Run the `deploy.sh` script optionally with a `BRANCH` envar.
 
 ## Traces in GCP
-Calling the deployed service, traces show up in GCP:
-![traces](traces.png)
+Calling the deployed service, traces show up in GCP. Here's how it looks for OpenTelemetry:
+![traces](traces_ot.png)
+
+And for OpenCensus:
+![traces](traces_oc.png)
+
